@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+
+@custom-variant light (&:where([data-theme='light'], [data-theme='light'] *));
+
+/* Dark is the default: technicians often work inside dim cabinets. */
+:root {
+  --bg: #0b0d12;
+  --surface: #151821;
+  --surface-2: #1e222d;
+  --border: #2a2f3c;
+  --text: #f1f3f7;
+  --muted: #9aa3b5;
+  --accent: #f5a524;
+  --accent-fg: #1a1205;
+  --accent-soft: rgb(245 165 36 / 0.16);
+  --danger: #f2555a;
+  --success: #34c77b;
+
+  /* Connector drawing */
+  --shell: #3a4050;
+  --face: #232733;
+  --key: #0b0d12;
+  --pin-empty: #4a5163;
+  --pin-stroke: #6c748a;
+  --pin-label: #f1f3f7;
+  --pin-signal: #2e3a55;
+
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f4f5f8;
+  --surface: #ffffff;
+  --surface-2: #eceef3;
+  --border: #d9dce5;
+  --text: #12151c;
+  --muted: #5d6578;
+  --accent: #d9860a;
+  --accent-fg: #ffffff;
+  --accent-soft: rgb(217 134 10 / 0.14);
+  --danger: #d6343a;
+  --success: #1f9d5c;
+
+  --shell: #a9afbd;
+  --face: #dfe2e9;
+  --key: #f4f5f8;
+  --pin-empty: #ffffff;
+  --pin-stroke: #6c748a;
+  --pin-label: #12151c;
+  --pin-signal: #d4e1fb;
+
+  color-scheme: light;
+}
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* Connector diagram */
+.pm-shell { fill: var(--shell); }
+.pm-face { fill: var(--face); }
+.pm-key { fill: var(--key); }
+.pm-pin { fill: var(--pin-empty); stroke: var(--pin-stroke); }
+.pm-pin-signal { fill: var(--pin-signal); stroke: var(--accent); }
+.pm-pin-label { fill: var(--pin-label); font-weight: 650; font-variant-numeric: tabular-nums; }
+.pm-selected { fill: none; stroke: var(--accent); animation: pm-pulse 1.4s ease-in-out infinite; }
+.pm-hit { fill: transparent; cursor: pointer; }
+.pm-hit:focus-visible { outline: none; fill: var(--accent-soft); }
+
+@keyframes pm-pulse {
+  50% { stroke-opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-selected { animation: none; }
+}
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
