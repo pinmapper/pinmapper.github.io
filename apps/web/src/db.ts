@@ -1,8 +1,9 @@
 import {
   emptyAnnotation,
-  getConnector,
+  resolveConnector,
   type Gender,
   type PinAnnotation,
+  type Params,
   type PinMap,
   type Preset,
 } from '@pinmapper/shared'
@@ -18,6 +19,7 @@ export async function createMap(opts: {
   gender: Gender
   title: string
   equipment?: string
+  params?: Params
   preset?: Preset
 }): Promise<PinMap> {
   const now = Date.now()
@@ -28,6 +30,7 @@ export async function createMap(opts: {
     gender: opts.gender,
     view: 'mating',
     equipment: opts.equipment ?? '',
+    ...(opts.params && Object.keys(opts.params).length ? { params: opts.params } : {}),
     pins: opts.preset ? applyPreset({}, opts.preset) : {},
     createdAt: now,
     updatedAt: now,
@@ -62,8 +65,8 @@ export function applyPreset(pins: PinMap['pins'], preset: Preset): PinMap['pins'
   return next
 }
 
-export function nextTitle(templateId: string, existing: PinMap[]): string {
-  const name = getConnector(templateId)?.name ?? templateId
+export function nextTitle(templateId: string, params: Params, existing: PinMap[]): string {
+  const name = resolveConnector(templateId, params)?.name ?? templateId
   const n = existing.filter((m) => !m.deleted && m.templateId === templateId).length + 1
   return `${name} #${n}`
 }

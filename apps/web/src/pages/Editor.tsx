@@ -1,8 +1,8 @@
 import {
   emptyAnnotation,
-  getConnector,
   isAnnotated,
   isMirrored,
+  resolveConnector,
   type PinAnnotation,
   type PinMap,
   type View,
@@ -96,7 +96,7 @@ function EditorView({ initial }: { initial: PinMap }) {
   const [map, setMap] = useState(initial)
   useAutosave(map)
   const update = (fn: (m: PinMap) => PinMap) => setMap(fn)
-  const template = getConnector(map.templateId)
+  const template = resolveConnector(map.templateId, map.params)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [tab, setTab] = useState<'diagram' | 'table'>('diagram')
   const [labelMode, setLabelMode] = useState<LabelMode>('number')
@@ -211,7 +211,13 @@ function EditorView({ initial }: { initial: PinMap }) {
           </>
         ) : (
           <div className="h-full overflow-y-auto">
-            <PinTable template={template} pins={map.pins} selectedId={selectedId} onSelect={setSelectedId} />
+            <PinTable
+              template={template}
+              pins={map.pins}
+              selectedId={selectedId}
+              onOpen={setSelectedId}
+              onPatch={patchPin}
+            />
           </div>
         )}
       </main>

@@ -1,4 +1,4 @@
-import { getConnector, isAnnotated, isMirrored, type PinMap } from '@pinmapper/shared'
+import { isAnnotated, isMirrored, resolveConnector, type PinMap } from '@pinmapper/shared'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { Moon, Plus, Search, Sun } from 'lucide-react'
 import { useState } from 'react'
@@ -22,7 +22,7 @@ export function Home() {
   const visible = maps?.filter(
     (m) =>
       !q ||
-      [m.title, m.equipment, getConnector(m.templateId)?.name ?? '']
+      [m.title, m.equipment, resolveConnector(m.templateId, m.params)?.name ?? '']
         .join(' ')
         .toLowerCase()
         .includes(q),
@@ -82,7 +82,7 @@ export function Home() {
 }
 
 function MapCard({ map }: { map: PinMap }) {
-  const t = getConnector(map.templateId)
+  const t = resolveConnector(map.templateId, map.params)
   if (!t) return null
   const done = t.pins.filter((p) => isAnnotated(map.pins[p.id])).length
   return (
@@ -120,7 +120,7 @@ function MapCard({ map }: { map: PinMap }) {
 }
 
 function EmptyState() {
-  const demo = getConnector('de9')!
+  const demo = resolveConnector('de9')!
   return (
     <div className="flex flex-1 flex-col items-center justify-center py-8 text-center">
       <div className="mb-8 w-full max-w-xs rounded-3xl border border-border bg-surface p-6">

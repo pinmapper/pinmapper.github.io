@@ -87,6 +87,7 @@ body {
 .pm-shell { fill: var(--shell); }
 .pm-face { fill: var(--face); }
 .pm-key { fill: var(--key); }
+.pm-marker { fill: var(--accent); }
 .pm-pin { fill: var(--pin-empty); stroke: var(--pin-stroke); }
 .pm-pin-signal { fill: var(--pin-signal); stroke: var(--accent); }
 .pm-pin-label { fill: var(--pin-label); font-weight: 650; font-variant-numeric: tabular-nums; }

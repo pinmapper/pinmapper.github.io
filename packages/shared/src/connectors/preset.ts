@@ -3,8 +3,8 @@ import type { Preset } from './types'
 
 type Entry = string | { signal?: string; wire?: WireColor }
 
-/** Presets keyed by pin number; a bare string is shorthand for a signal name. */
-export function preset(id: string, name: string, pins: Record<number, Entry>): Preset {
+/** Presets keyed by pin id; a bare string is shorthand for a signal name. */
+export function preset(id: string, name: string, pins: Record<number | string, Entry>): Preset {
   return {
     id,
     name,

@@ -35,6 +35,8 @@ export const PinMap = z.object({
   gender: Gender,
   view: View,
   equipment: z.string().max(200).default(''),
+  /** Size/layout for parametric connectors (headers, custom builders). */
+  params: z.record(z.string(), z.union([z.number(), z.boolean(), z.string()])).optional(),
   pins: z.record(z.string(), PinAnnotation),
   createdAt: z.number(),
   updatedAt: z.number(),
