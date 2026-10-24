@@ -1,8 +1,9 @@
 import { isAnnotated, isMirrored, resolveConnector, type PinMap } from '@pinmapper/shared'
 import { useLiveQuery } from 'dexie-react-hooks'
-import { Moon, Plus, Search, Sun } from 'lucide-react'
+import { DatabaseBackup, Moon, Plus, Search, Sun } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router'
+import { BackupSheet } from '@/components/BackupSheet'
 import { ConnectorDiagram } from '@/components/ConnectorDiagram'
 import { inputClass } from '@/components/ui/Field'
 import { db } from '@/db'
@@ -17,6 +18,7 @@ export function Home() {
   )
   const [query, setQuery] = useState('')
   const { theme, toggle } = useTheme()
+  const [backupOpen, setBackupOpen] = useState(false)
 
   const q = query.trim().toLowerCase()
   const visible = maps?.filter(
@@ -35,15 +37,26 @@ export function Home() {
           <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="" className="size-9" />
           <h1 className="text-xl font-extrabold tracking-tight">PinMapper</h1>
         </div>
-        <button
-          type="button"
-          onClick={toggle}
-          aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
-          className="grid size-11 place-items-center rounded-full text-muted hover:bg-surface-2"
-        >
-          {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
-        </button>
+        <div className="flex">
+          <button
+            type="button"
+            onClick={() => setBackupOpen(true)}
+            aria-label="Backup and restore"
+            className="grid size-11 place-items-center rounded-full text-muted hover:bg-surface-2"
+          >
+            <DatabaseBackup className="size-5" />
+          </button>
+          <button
+            type="button"
+            onClick={toggle}
+            aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+            className="grid size-11 place-items-center rounded-full text-muted hover:bg-surface-2"
+          >
+            {theme === 'dark' ? <Sun className="size-5" /> : <Moon className="size-5" />}
+          </button>
+        </div>
       </header>
+      <BackupSheet open={backupOpen} onClose={() => setBackupOpen(false)} count={maps?.length ?? 0} />
 
       {maps && maps.length === 0 && <EmptyState />}
 

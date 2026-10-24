@@ -15,6 +15,7 @@ import {
   LayoutGrid,
   List,
   MoreVertical,
+  Share2,
   Tag,
   Trash2,
   Wand2,
@@ -22,6 +23,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router'
 import { ConnectorDiagram, type LabelMode } from '@/components/ConnectorDiagram'
+import { ExportSheet } from '@/components/ExportSheet'
 import { PinSheet } from '@/components/PinSheet'
 import { PinTable } from '@/components/PinTable'
 import { Button } from '@/components/ui/Button'
@@ -101,6 +103,7 @@ function EditorView({ initial }: { initial: PinMap }) {
   const [tab, setTab] = useState<'diagram' | 'table'>('diagram')
   const [labelMode, setLabelMode] = useState<LabelMode>('number')
   const [menuOpen, setMenuOpen] = useState(false)
+  const [exportOpen, setExportOpen] = useState(false)
 
   const usedSignals = useMemo(
     () => [...new Set(Object.values(map.pins).map((a) => a.signal.trim()).filter(Boolean))],
@@ -153,6 +156,9 @@ function EditorView({ initial }: { initial: PinMap }) {
             {map.equipment && ` · ${map.equipment}`}
           </div>
         </div>
+        <Button variant="ghost" size="icon" aria-label="Export and share" onClick={() => setExportOpen(true)}>
+          <Share2 className="size-5" />
+        </Button>
         <Button variant="ghost" size="icon" aria-label="More actions" onClick={() => setMenuOpen(true)}>
           <MoreVertical className="size-5" />
         </Button>
@@ -253,6 +259,8 @@ function EditorView({ initial }: { initial: PinMap }) {
           </Button>
         </footer>
       )}
+
+      <ExportSheet open={exportOpen} onClose={() => setExportOpen(false)} map={map} template={template} />
 
       <Sheet open={menuOpen} onClose={() => setMenuOpen(false)} title="Map options">
         <div className="space-y-4">

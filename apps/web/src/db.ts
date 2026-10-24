@@ -2,7 +2,6 @@ import {
   emptyAnnotation,
   resolveConnector,
   type Gender,
-  type PinAnnotation,
   type Params,
   type PinMap,
   type Preset,
@@ -71,4 +70,31 @@ export function nextTitle(templateId: string, params: Params, existing: PinMap[]
   return `${name} #${n}`
 }
 
-export type { PinAnnotation }
+
+export interface ImportResult {
+  added: number
+  updated: number
+  skipped: number
+}
+
+/**
+ * Merge imported maps by id: new or deleted-locally maps are restored, and an
+ * existing map is only replaced when the imported copy is newer.
+ */
+export async function importMaps(maps: PinMap[]): Promise<ImportResult> {
+  const result: ImportResult = { added: 0, updated: 0, skipped: 0 }
+  await db.transaction('rw', db.maps, async () => {
+    for (const m of maps) {
+      const cur = await db.maps.get(m.id)
+      if (!cur || cur.deleted) {
+        await db.maps.put({ ...m, deleted: false })
+        result.added++
+      } else if (m.updatedAt > cur.updatedAt) {
+        await db.maps.put({ ...m, rev: Math.max(cur.rev, m.rev) + 1, deleted: false })
+        result.updated++
+      } else result.skipped++
+    }
+  })
+  return result
+}
+

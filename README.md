@@ -8,6 +8,8 @@ Label connector pins and wires from your phone instead of on paper. Pick a conne
 - Front (mating face) and rear (wire side) views, with male/female mirroring handled for you
 - Standard pinouts built in (RS-232, VGA, PS/2, USB, USB-C, T568A/B, RJ11, OBD-II, parallel port…)
 - IDC and pin headers in any size, plus a custom grid/circular builder for anything else
+- Export a map as an image, PDF or CSV and send it through the phone's share sheet
+- Back up all maps to a file and restore them on another device
 - Works offline; maps are stored on the device (IndexedDB)
 
 ## Development
