@@ -35,6 +35,7 @@ export function ConnectorDiagram({
   const shape = t.pinShape
   const size = shape.kind === 'circle' ? shape.r : Math.min(shape.w, shape.h) / 2
   const sw = size * 0.14
+  const numberSize = numberFontSize(t)
 
   return (
     <svg
@@ -88,9 +89,9 @@ export function ConnectorDiagram({
               strokeOpacity={0.35}
               strokeWidth={stripe ? size * 0.12 : 0}
               paintOrder="stroke"
-              fontSize={labelFontSize(t, text)}
+              fontSize={text === p.label ? numberSize : labelFontSize(t, text)}
               textAnchor="middle"
-              dominantBaseline="central"
+              dy={CAP_CENTER}
               pointerEvents="none"
             >
               {text}
@@ -137,6 +138,25 @@ function selectionRing(t: ConnectorTemplate, x: number, y: number, sw: number) {
       strokeWidth={sw * 2.2}
     />
   )
+}
+
+/**
+ * Vertical centring without dominant-baseline, which Safari places differently
+ * from Chrome: sit on the alphabetic baseline and drop by half the cap height
+ * (Inter ≈ 0.727em; Arial, the export fallback, ≈ 0.716em).
+ */
+const CAP_CENTER = '0.36em'
+
+/** One size for every pin number on a connector, set by the longest (A10, 12…). */
+const numberSizes = new WeakMap<ConnectorTemplate, number>()
+function numberFontSize(t: ConnectorTemplate) {
+  let size = numberSizes.get(t)
+  if (size === undefined) {
+    const longest = t.pins.reduce((n, p) => Math.max(n, p.label.length), 1)
+    size = labelFontSize(t, 'x'.repeat(longest))
+    numberSizes.set(t, size)
+  }
+  return size
 }
 
 /** Shrink long signal names so they still fit inside the pin. */
@@ -191,7 +211,7 @@ function StatusBadge({
           fontSize={r * 1.5}
           fontWeight={800}
           textAnchor="middle"
-          dominantBaseline="central"
+          dy={CAP_CENTER}
         >
           !
         </text>

@@ -199,7 +199,7 @@ function EditorView({ initial }: { initial: PinMap }) {
                 labelMode={labelMode}
                 interactive
                 onPinActivate={setSelectedId}
-                className="max-h-full w-full max-w-3xl p-3"
+                className="max-h-full w-full max-w-3xl px-1.5 py-12"
               />
             </ZoomPan>
             <ViewBadge view={map.view} genderLabel={template.genderLabels[map.gender]} />

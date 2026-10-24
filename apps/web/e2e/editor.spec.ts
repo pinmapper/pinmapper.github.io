@@ -58,7 +58,9 @@ test('build a custom circular connector and label it from the table', async ({ p
   await page.getByRole('button', { name: /Custom circular/ }).click()
 
   await page.getByRole('button', { name: 'Fewer pins on the circle' }).click()
-  await page.getByRole('switch', { name: 'Centre pin' }).check({ force: true })
+  // Tap the visible label, as a user would; the switch input itself is visually hidden.
+  await page.getByText('Centre pin', { exact: true }).click()
+  await expect(page.getByRole('switch', { name: 'Centre pin' })).toBeChecked()
   await page.getByRole('radio', { name: 'Anticlockwise' }).click()
   await expect(page.getByText('Circular 3+1-pin · 4 pins')).toBeVisible()
   await expect(page.getByText(/Set where pin 1 is/)).toBeVisible()

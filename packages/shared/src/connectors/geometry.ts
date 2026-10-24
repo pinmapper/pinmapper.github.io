@@ -82,7 +82,7 @@ export function defineConnector({ bounds, ...t }: Draft): ConnectorTemplate {
   const [minX, minY, maxX, maxY] = bounds
   // Symmetric horizontal padding so mirroring (x -> -x) keeps everything in view.
   const half = Math.max(Math.abs(minX), Math.abs(maxX))
-  const pad = Math.max(maxX - minX, maxY - minY) * 0.08
+  const pad = Math.max(maxX - minX, maxY - minY) * 0.035
   return {
     ...t,
     hitRadius: computeHitRadius(t.pins, t.pinShape),

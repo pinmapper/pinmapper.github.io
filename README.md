@@ -20,8 +20,16 @@ Requires Node 24.
 npm install
 npm run dev          # http://localhost:5173 (add --host to try it on your phone over LAN)
 npm test             # unit tests (connector geometry, schemas)
-npm run e2e -w @pinmapper/web   # Playwright on Pixel / iPhone viewports
+npm run e2e -w @pinmapper/web   # Playwright on Pixel / iPhone viewports (Chromium)
 npm run lint && npm run typecheck
+```
+
+CI also runs every e2e test in WebKit (Safari's engine). WebKit needs Ubuntu system libraries, so on other
+distros run it in Playwright's container:
+
+```sh
+podman run --rm --network host --security-opt label=disable -v "$PWD":/work -w /work/apps/web \
+  -e PW_WEBKIT=1 mcr.microsoft.com/playwright:v1.64.1-noble npx playwright test --project=webkit-iphone
 ```
 
 ## Layout

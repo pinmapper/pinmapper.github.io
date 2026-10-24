@@ -111,7 +111,7 @@ export const USB_C = (() => {
     description: '24 contacts, reversible',
     refGender: 'F',
     genderLabels: { M: 'Plug', F: 'Receptacle (port)' },
-    pinShape: { kind: 'rect', w: 1.0, h: 1.9 },
+    pinShape: { kind: 'rect', w: 1.3, h: 1.9 },
     body: [
       body('shell', rectPath(-halfW, -4.2, halfW * 2, 8.4, 4.2)),
       body('key', rectPath(-halfW + 0.7, -3.5, halfW * 2 - 1.4, 7, 3.5)),

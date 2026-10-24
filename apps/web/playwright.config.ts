@@ -9,6 +9,8 @@ export default defineConfig({
   projects: [
     { name: 'pixel', use: { ...devices['Pixel 7'] } },
     { name: 'iphone', use: { ...devices['iPhone 15'], defaultBrowserType: 'chromium' } },
+    // Real Safari engine. Runs in CI; locally it needs Ubuntu libs (see README), so it's opt-in.
+    ...(process.env.CI || process.env.PW_WEBKIT ? [{ name: 'webkit-iphone', use: { ...devices['iPhone 15'] } }] : []),
   ],
   webServer: {
     command: 'npm run build && npx vite preview --port 4173 --strictPort',
